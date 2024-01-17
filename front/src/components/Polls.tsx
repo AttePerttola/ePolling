@@ -1,4 +1,5 @@
-import { GetPollOptions } from './PollOption';
+import { GetPollOptions } from "./PollOption";
+import "./Polls.css";
 
 type Poll = {
   id: number;
@@ -10,15 +11,16 @@ type PollsProps = {
 export const Polls = ({ polls }: PollsProps) => {
   //console.log(polls)
   return (
-    <div>
+    <>
       <h2> All polls: </h2>
-      {polls.map((poll) => (
-        <div className='poll-preview' key={poll.id}>
-          <h2>{poll.title}</h2>
-          <GetPollOptions id={poll.id} />
-        </div>
-      ))}
-
-    </div>
+      <div className="polls">
+        {polls.map((poll) => (
+          <div className="poll-preview" key={poll.id}>
+            <h2>{poll.title}</h2>
+            <GetPollOptions id={poll.id} />
+          </div>
+        ))}
+      </div>
+    </>
   );
 };

@@ -1,0 +1,29 @@
+.create-poll {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.create-poll label {
+  text-align: left;
+  display: block;
+}
+
+.create-poll input {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+
+.create-poll button {
+  padding: 8px;
+
+  cursor: pointer;
+}
+
+.btn-box {
+  padding: 8px;
+}

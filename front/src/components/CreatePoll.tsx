@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
+import './CreatePoll.css';
 
 type CreatePollProps = {
   handler: (data: any) => void;
@@ -12,10 +13,11 @@ export const CreatePoll = ({ handler }: CreatePollProps) => {
     e.preventDefault();
     //const poll = { title, options }
     //console.log(poll)
-    axios.post('http://localhost:8081/polls/add', {
-      title: title,
-      options: options
-    })
+    axios
+      .post('http://localhost:8081/polls/add', {
+        title: title,
+        options: options,
+      })
       .then(function (response) {
         //console.log(response)
         handler(response.data.polls);
@@ -43,30 +45,34 @@ export const CreatePoll = ({ handler }: CreatePollProps) => {
   };
 
   return (
-    <div className='create-poll'>
+    <div className="create-poll">
       <h2>Add a new poll</h2>
       <form onSubmit={handleSubmit}>
         <label>Poll title: </label>
         <input
-          type='text'
+          type="text"
           required
           value={title}
-          placeholder='Enter poll title'
-          onChange={(e) => SetTitle(e.target.value)} />
+          placeholder="Enter poll title"
+          onChange={(e) => SetTitle(e.target.value)}
+        />
         {options.map((element, index) => (
-          <div className='options' key={index}>
+          <div className="options" key={index}>
             <label>Option </label>
             <input
               name="option"
-              placeholder='Enter poll option'
+              placeholder="Enter poll option"
               value={element}
               required
-              onChange={e => handleChange(e, index)} />
-            <div className='btn-box'>
-              {options.length !== 1 && <button
-                className='rem'
-                onClick={() => handleRemoveClick(index)}>Remove</button>}
-              {options.length - 1 === index && <button onClick={handleAddClick}>Add</button>}
+              onChange={(e) => handleChange(e, index)}
+            />
+            <div className="btn-box">
+              {options.length !== 1 && (
+                <button onClick={() => handleRemoveClick(index)}>Remove</button>
+              )}
+              {options.length - 1 === index && (
+                <button onClick={handleAddClick}>Add Option</button>
+              )}
             </div>
           </div>
         ))}

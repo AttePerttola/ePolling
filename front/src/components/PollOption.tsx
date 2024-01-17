@@ -7,25 +7,23 @@ type Option = {
   votes: number;
 };
 
-export const GetPollOptions = ({ id }: { id: number; }) => {
+export const GetPollOptions = ({ id }: { id: number }) => {
   //console.log(id)
   const [options, SetOptions] = useState<Option[]>([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8081/polls/' + id)
-      .then(response => {
-        //console.log(response.data.options)
-        SetOptions(response.data.options);
-      });
+    axios.get('http://localhost:8081/polls/' + id).then((response) => {
+      //console.log(response.data.options)
+      SetOptions(response.data.options);
+    });
   }, [id]);
 
   const handleVote = (voteid, voteoption) => {
-
-    axios.post('http://localhost:8081/polls/' + voteid + '/vote/' + voteoption, {
-      id: voteid,
-      option: voteoption
-    })
+    axios
+      .post('http://localhost:8081/polls/' + voteid + '/vote/' + voteoption, {
+        id: voteid,
+        option: voteoption,
+      })
       .then(function (response) {
         //console.log(response.data.options)
         SetOptions(response.data.options);
@@ -35,8 +33,10 @@ export const GetPollOptions = ({ id }: { id: number; }) => {
   return (
     <div>
       {options.map((option) => (
-        <div className='poll-option' key={option.id}>
-          <p>{option.title} {option.votes}</p>
+        <div className="poll-option" key={option.id}>
+          <p>
+            {option.title} {option.votes}
+          </p>
           <button onClick={() => handleVote(id, option.id)}>Vote</button>
         </div>
       ))}

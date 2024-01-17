@@ -1,0 +1,25 @@
+.poll-preview {
+  display: grid;
+  padding: 10px 16px;
+  margin: 20px 0;
+  border-bottom: 1px solid #fafafa;
+  max-width: 500px;
+}
+
+.polls {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+}
+
+.poll-preview:hover {
+  box-shadow: 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.poll-preview h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 8px;
+}
