@@ -1,27 +1,29 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-import './App.css';
-import { Polls } from './components/Polls';
-import { CreatePoll } from './components/CreatePoll';
+import "./App.css";
+import { Polls } from "./components/Polls";
+import { CreatePoll } from "./components/CreatePoll";
 
 const App = () => {
   const [polls, setPolls] = useState([]);
 
-  useEffect(() => {
-    console.log('effect');
-    axios.get('http://localhost:8081/polls').then((response) => {
-      //console.log(response.data.polls)
-      setPolls(response.data.polls);
+  const fetchPolls = () => {
+    axios.get("http://localhost:5033/Poll/getAll").then((response) => {
+      setPolls(response.data);
     });
+  };
+
+  // fetch all polls on mount
+  useEffect(() => {
+    fetchPolls();
   }, []);
-  //console.log(polls)
 
   return (
     <div>
       <h1>ePoll</h1>
       {polls && <Polls polls={polls} />}
-      <CreatePoll handler={setPolls} />
+      <CreatePoll handler={fetchPolls} />
     </div>
   );
 };

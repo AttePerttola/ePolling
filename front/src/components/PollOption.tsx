@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 type Option = {
   id: number;
@@ -7,23 +7,37 @@ type Option = {
   votes: number;
 };
 
+type Poll = {
+  id: number;
+  title: string;
+  options: Option[];
+};
+
+type VoteRequest = {
+  id: number;
+  option: number;
+};
+
 export const GetPollOptions = ({ id }: { id: number }) => {
   //console.log(id)
   const [options, SetOptions] = useState<Option[]>([]);
 
+  // fetch poll options
   useEffect(() => {
-    axios.get('http://localhost:8081/polls/' + id).then((response) => {
-      //console.log(response.data.options)
+    axios.get<Poll>("http://localhost:5033/Poll/" + id).then((response) => {
+      //console.log(response.data.options);
       SetOptions(response.data.options);
     });
   }, [id]);
 
-  const handleVote = (voteid, voteoption) => {
+  // vote for an option
+  const handleVote = (optionId) => {
+    const voteData: VoteRequest = { id: id, option: optionId };
     axios
-      .post('http://localhost:8081/polls/' + voteid + '/vote/' + voteoption, {
-        id: voteid,
-        option: voteoption,
-      })
+      .put<Poll>(
+        "http://localhost:5033/Poll/" + id + "/vote/" + optionId,
+        voteData
+      )
       .then(function (response) {
         //console.log(response.data.options)
         SetOptions(response.data.options);
@@ -37,7 +51,7 @@ export const GetPollOptions = ({ id }: { id: number }) => {
           <p>
             {option.title} {option.votes}
           </p>
-          <button onClick={() => handleVote(id, option.id)}>Vote</button>
+          <button onClick={() => handleVote(option.id)}>Vote</button>
         </div>
       ))}
     </div>

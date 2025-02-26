@@ -1,49 +1,56 @@
-import axios from 'axios';
-import { useState } from 'react';
-import './CreatePoll.css';
+import axios from "axios";
+import { useState } from "react";
+import "./CreatePoll.css";
 
-type CreatePollProps = {
-  handler: (data: any) => void;
+type Option = {
+  id?: number;
+  title: string;
+  votes?: number;
 };
-export const CreatePoll = ({ handler }: CreatePollProps) => {
-  const [options, SetOptions] = useState(['']);
-  const [title, SetTitle] = useState('');
+
+export const CreatePoll = ({ handler }) => {
+  const [options, SetOptions] = useState<Option[]>([{ title: "" }]);
+  const [title, SetTitle] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     //const poll = { title, options }
     //console.log(poll)
     axios
-      .post('http://localhost:8081/polls/add', {
+      .post("http://localhost:5033/Poll", {
         title: title,
         options: options,
       })
       .then(function (response) {
-        //console.log(response)
-        handler(response.data.polls);
-        SetTitle('');
-        SetOptions(['']);
+        console.log(response);
+        handler();
+        SetTitle("");
+        SetOptions([]);
       });
   };
 
-  const handleChange = (e, index) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const value = e.target.value;
     //console.log(value)
     const list = [...options];
-    list[index] = value;
+    list[index] = { title: value };
     SetOptions(list);
   };
 
-  const handleRemoveClick = (index) => {
+  const handleRemoveClick = (index: number) => {
     const list = [...options];
     list.splice(index, 1);
     SetOptions(list);
   };
 
   const handleAddClick = () => {
-    SetOptions([...options, '']);
+    SetOptions([...options, { title: "" }]);
   };
 
+  //console.log(options);
   return (
     <div className="create-poll">
       <h2>Add a new poll</h2>
@@ -62,7 +69,7 @@ export const CreatePoll = ({ handler }: CreatePollProps) => {
             <input
               name="option"
               placeholder="Enter poll option"
-              value={element}
+              value={element.title}
               required
               onChange={(e) => handleChange(e, index)}
             />
